@@ -30,8 +30,22 @@ export default function MessageForm({ signer, contractAddress, abi }: Props) {
     try {
       setSending(true);
       const contract = new ethers.Contract(contractAddress, abi, signer);
+      // পাঠানোর ট্রানজেকশন
       const tx = await contract.sendGreeting(to, messageToSend);
       setTxHash(tx.hash);
+
+      // এখানে আমরা স্থানীয় ইভেন্ট ডিসপ্যাচ করছি যাতে UI-র সাম্প্রতিক লিস্ট আপডেট হয়
+      const payload = { hash: tx.hash, to, message: messageToSend };
+      try {
+        window.dispatchEvent(new CustomEvent("pohela:newTx", { detail: payload }));
+      } catch (e) {
+        // কোনো ব্রাউজারে CustomEvent restriction থাকলে fallback
+        // @ts-ignore
+        if (typeof window !== "undefined" && (window as any).dispatchEvent) {
+          // ignore
+        }
+      }
+
       await tx.wait();
       alert("ট্রানজেকশন সফল: " + tx.hash);
     } catch (err: any) {
@@ -43,33 +57,51 @@ export default function MessageForm({ signer, contractAddress, abi }: Props) {
   }
 
   return (
-    <div className="p-4 bg-white/70 rounded-md shadow-md">
-      <h3 className="text-lg font-bold mb-2">পহেলা বৈশাখ শুভেচ্ছা পাঠান</h3>
+    <div>
       <label className="block mb-2">
         প্রাপক ঠিকানা:
-        <input className="block w-full p-2 border rounded" value={to} onChange={(e) => setTo(e.target.value)} placeholder="0x..." />
+        <input
+          className="input mt-1"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          placeholder="0x..."
+        />
       </label>
 
-      <div className="mb-2">
-        <button onClick={pickRandom} className="px-3 py-2 bg-green-600 text-white rounded">র‍্যান্ডম শুভেচ্ছা নিন</button>
+      <div className="flex gap-2 mb-3">
+        <button onClick={pickRandom} className="btn btn-saffron">
+          র‍্যান্ডম শুভেচ্ছা নিন
+        </button>
+        <div className="text-sm text-gray-600 flex items-center">বা ম্যানুয়ালি লিখুন</div>
       </div>
 
       <label className="block mb-2">
-        র‍্যান্ডম বার্তা:
-        <textarea className="block w-full p-2 border rounded" value={selectedMsg} readOnly rows={2} />
+        র‍্যান্ডম বার্তা (পছন্দ হলে ম্যানুয়াল ওভাররাইড করবে):
+        <textarea className="input mt-1" value={selectedMsg} readOnly rows={2} />
       </label>
 
-      <label className="block mb-2">
-        অথবা ম্যানুয়ালি লিখুন:
-        <textarea className="block w-full p-2 border rounded" value={manualMsg} onChange={(e) => setManualMsg(e.target.value)} rows={3} />
+      <label className="block mb-3">
+        ম্যানুয়াল বার্তা:
+        <textarea
+          className="input mt-1"
+          value={manualMsg}
+          onChange={(e) => setManualMsg(e.target.value)}
+          rows={3}
+        />
       </label>
 
-      <div className="flex gap-2">
-        <button onClick={sendGreeting} disabled={sending} className="px-4 py-2 bg-blue-600 text-white rounded">
+      <div className="flex gap-2 items-center">
+        <button onClick={sendGreeting} disabled={sending} className="btn btn-primary">
           {sending ? "পাঠানো হচ্ছে..." : "পাঠান"}
         </button>
+
         {txHash && (
-          <a className="px-4 py-2 bg-gray-200 rounded" href={`https://base.blockscout.com/tx/${txHash}`} target="_blank" rel="noreferrer">
+          <a
+            className="btn btn-ghost"
+            href={`https://base.blockscout.com/tx/${txHash}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             ট্রানজেকশন দেখুন
           </a>
         )}
