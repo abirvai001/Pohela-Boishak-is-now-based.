@@ -1,1 +1,183 @@
+/* Google Fonts - Hind Siliguri (বাংলা-ফ্রেন্ডলি) */
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap');
 
+/* Tailwind base reset (Next.js + Tailwind will also include preflight)
+   Additional small resets for consistent Bengali typography */
+:root {
+  --bg-light: #fffaf2;
+  --accent-saffron: #ff8a00;
+  --accent-red: #d62828;
+  --accent-green: #2a9d8f;
+  --base-blue: #0b63ff;
+}
+
+html, body, #__next {
+  height: 100%;
+  background-color: var(--bg-light);
+  font-family: 'Hind Siliguri', 'Noto Sans Bengali', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #0b2636;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global background composition:
+   1) top gradient that mixes Base blue and Boishak saffron subtly
+   2) repeated pattern texture (light)
+   3) decorative elements layer (like traditional items) centered with low opacity
+*/
+body {
+  background-image:
+    linear-gradient(135deg, rgba(255,138,0,0.06), rgba(11,99,255,0.04)),
+    url('/textures/bg-pattern.png'),
+    url('/textures/boishak-elements.png');
+  background-repeat: repeat, repeat-x, no-repeat;
+  background-position: center top, center top, center 40%;
+  background-size: auto, 240px, 720px;
+  background-attachment: local, local, scroll;
+}
+
+/* Container styling for main layout */
+.container {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Card base for panels */
+.card {
+  background: rgba(255,255,255,0.82);
+  border-radius: 1rem;
+  box-shadow: 0 8px 30px rgba(10,37,76,0.06);
+  border: 1px solid rgba(11,99,255,0.06);
+  padding: 1rem;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.header .title {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+.logo-badge {
+  width: 64px;
+  height: 64px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,138,0,0.12), rgba(11,99,255,0.06));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--accent-red);
+  font-size: 1.25rem;
+  box-shadow: 0 6px 18px rgba(10,37,76,0.06);
+}
+
+/* Heading typography in Bengali */
+.h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0b2a3a;
+  line-height: 1.05;
+}
+.h1 small {
+  display: block;
+  font-size: 0.85rem;
+  color: #37515a;
+  margin-top: 4px;
+}
+
+/* Countdown widget */
+.countdown {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.80));
+  border-radius: 12px;
+  border: 1px dashed rgba(11,99,255,0.06);
+}
+.countdown .time {
+  font-weight: 700;
+  font-family: 'Hind Siliguri', monospace;
+  font-size: 1.25rem;
+  color: var(--base-blue);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary {
+  background: linear-gradient(90deg, var(--base-blue), #084bc2);
+  color: white;
+  box-shadow: 0 8px 20px rgba(11, 99, 255, 0.12);
+  border: none;
+}
+.btn-saffron {
+  background: linear-gradient(90deg, var(--accent-saffron), #ff6f00);
+  color: white;
+  border: none;
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(11,99,255,0.06);
+  color: #07406a;
+}
+
+/* Input & textarea */
+.input, textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(11,99,255,0.08);
+  background: rgba(255,255,255,0.95);
+  color: #05323f;
+  font-size: 0.96rem;
+}
+textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+/* Message card (greeting preview) */
+.greeting-card {
+  background: linear-gradient(180deg, rgba(255,250,243,0.95), rgba(255,255,255,0.9));
+  border-left: 6px solid var(--accent-saffron);
+  padding: 0.85rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(166, 80, 18, 0.04);
+}
+.greeting-card .msg {
+  font-size: 1rem;
+  color: #12323a;
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #4b6b72;
+  font-size: 0.9rem;
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px) {
+  .h1 { font-size: 2.2rem; }
+  .logo-badge { width: 72px; height: 72px; font-size: 1.35rem; border-radius: 14px; }
+}
