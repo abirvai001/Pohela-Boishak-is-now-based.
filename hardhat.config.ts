@@ -1,5 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
-import "@nomiclabs/hardhat-ethers";
+import "@nomicfoundation/hardhat-ethers";
 import "dotenv/config";
 
 const ALCHEMY_URL = process.env.BASE_RPC || "";
